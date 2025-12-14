@@ -4,3 +4,5 @@ int foo(int x) /* Function definition */
 {
   return x + 5;
 }
+
+void split_string(char *str, char *buf[]){} 

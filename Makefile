@@ -20,3 +20,8 @@ $(DIR_OBJ)/%.o: $(DIR_LIB)/%.c $(DIR_INC)/%.h
 
 day$(DAY): day$(DAY)/main
 	$(CC) $(CFLAGS) $(LDFLAGS) $<.c -o day$(DAY)/main
+
+# build library for testing
+.PHONY: build-lib-test
+build-lib-test: lib
+	
