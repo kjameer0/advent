@@ -17,11 +17,15 @@ lib: $(OBJECTS)
 
 $(DIR_OBJ)/%.o: $(DIR_LIB)/%.c $(DIR_INC)/%.h
 	gcc -c -o $@ $<
-
+# builds a specific day's binary: Ex: make day1 DAY=1
 day$(DAY): day$(DAY)/main
 	$(CC) $(CFLAGS) $(LDFLAGS) $<.c -o day$(DAY)/main
 
 # build library for testing
 .PHONY: build-lib-test
 build-lib-test: lib
-	
+	$(CC) $(CFLAGS) $(LDFLAGS) $(DIR_LIB)/__test__/t.c -o $(DIR_LIB)/__test__/test
+
+.PHONY: run-lib-test
+run-lib-test: build-lib-test
+	$(DIR_LIB)/__test__/test
