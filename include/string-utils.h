@@ -7,6 +7,6 @@
 
 int foo(int x); /* An example function declaration */
 
-void split_string(char *str, char *buf[]);
+void split_string(char str[], char *buf[], char separator, unsigned long buf_size);
 
 #endif
