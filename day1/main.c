@@ -7,61 +7,86 @@
 #include <stdlib.h>
 #include <string.h>
 
-// int rotate(char direction, )
+// // rotate the dial in a given direction by magnitude numbers starting from start
+int rotate(char direction, int start, int magnitude)
+{
+  // start = start % 100;
+  int finalPosition = 0;
+  // printf("starting num: %d\n", start);
+  // printf("magnitude num: %d\n", magnitude);
+  if (direction == 'R')
+  {
+    finalPosition = (magnitude + start) % 100;
+  }
+  else
+  {
+    finalPosition = (start - magnitude) % 100;
+  }
+  return finalPosition;
+}
 // extracts a number from a L43 type string
 int extract_number(char str[])
 {
-  // char *rawDigits = malloc(strlen(str) + 1);
+  if (!str)
+    return 0;
+  char *rawDigits = malloc(strlen(str));
   // printf("%c", str[0]);
-  // for (unsigned long i = 1; i < strlen(str); i++)
-  // {
-  //   if (str[i] == "\n")
-  //     break;
-  //   rawDigits[i - 1] = str[i];
-  // }
-  // int result = atoi(rawDigits);
-  // return result;
-  return 1;
+  for (unsigned long i = 1; i < strlen(str); i++)
+  {
+    if (str[i] == '\n')
+      break;
+    rawDigits[i - 1] = str[i];
+  }
+  int result = atoi(rawDigits);
+  return result;
+  // return 1;
 }
 int main(void)
 {
   FILE *fptr;
-  fptr = fopen("./day1/sample_data.txt", "r");
+  fptr = fopen("./day1/data.txt", "r");
   if (fptr == NULL)
   {
     printf("Not able to open the file.");
     exit(1);
   }
-  char myString[5];
-  int bufSize = 1000;
-  char *lineBuf[5] = malloc(bufSize * sizeof(*lineBuf));
+  char myString[6];
+  int bufSize = 100000;
+  char **lineBuf = malloc(bufSize * sizeof(*lineBuf));
   int curBufIdx = 0;
-  while (fgets(myString, 5, fptr))
+  while (fgets(myString, 6, fptr))
   {
-    // printf("cur idx: %d\n", curBufIdx);
-    lineBuf[curBufIdx] = malloc(strlen(myString) + 1);
-    printf("%lu", sizeof myString);
-    memcpy(lineBuf[curBufIdx], myString, sizeof myString);
-    printf("%lu", sizeof lineBuf[curBufIdx]);
-    // // lineBuf[curBufIdx] = str;
-    // printf("%p\n", lineBuf[curBufIdx]);
+    size_t len = strlen(myString) + 1;
+    lineBuf[curBufIdx] = malloc(len);
+    memcpy(lineBuf[curBufIdx], myString, len);
     curBufIdx++;
   };
+  // core loop for problem logic
+  // get direction and number
+  // rotate lock
+  // update password number
+  int currentPosition = 50;
+  int numberOfZeros = 0;
+  printf("%s", "starting calculation\n");
   for (int idx = 0; idx < bufSize; idx++)
   {
-    int num = extract_number(lineBuf[bufSize]);
     if (lineBuf[idx] == NULL)
     {
       break;
     }
-    // printf("%s", lineBuf[idx]);
-    // printf("%d", num);
+    int num = extract_number(lineBuf[idx]);
+    char direction = lineBuf[idx][0];
+    currentPosition = rotate(direction, currentPosition, num);
+    printf("original: %s, direction : %c num: %d\n", lineBuf[idx], direction, num);
+    if (currentPosition == 0)
+    {
+      numberOfZeros++;
+    }
+    int crossover = num / 100;
+    numberOfZeros += crossover;
   }
-  for (int i = 0; i < curBufIdx; i++)
-  {
-    free(lineBuf[i]);
-  }
-  free(lineBuf);
+  printf("Number of zeroes: %d\n", numberOfZeros);
+
   fclose(fptr);
-  // printf("%s", myString);
+  // printf("%d", sizeof(int));
 }

@@ -3,6 +3,25 @@
 #include <setjmp.h>
 #include <cmocka.h>
 
+int rotate(char direction, int start, int magnitude)
+{
+  // start = start % 100;
+  int finalPosition = 0;
+  // printf("%s\n", "start");
+  // printf("starting num: %d\n", start);
+  // printf("magnitude num: %d\n", magnitude);
+  if (direction == 'R')
+  {
+    finalPosition = (magnitude + start) % 100;
+  }
+  else
+  {
+    finalPosition = start - magnitude % 100;
+    // printf("first subtraction: %d\n", finalPosition);
+  }
+  return finalPosition;
+}
+
 // #include "math_utils.h"
 int add(int x, int y)
 {
