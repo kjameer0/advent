@@ -4,26 +4,12 @@
 
 #include <stdio.h>
 #include "../include/string-utils.h" /* Include the header here, to obtain the function declaration */
+#include "../include/math-utils.h"   /* Include the header here, to obtain the function declaration */
 #include <stdlib.h>
 #include <string.h>
 
 // // rotate the dial in a given direction by magnitude numbers starting from start
-int rotate(char direction, int start, int magnitude)
-{
-  // start = start % 100;
-  int finalPosition = 0;
-  // printf("starting num: %d\n", start);
-  // printf("magnitude num: %d\n", magnitude);
-  if (direction == 'R')
-  {
-    finalPosition = (magnitude + start) % 100;
-  }
-  else
-  {
-    finalPosition = (start - magnitude) % 100;
-  }
-  return finalPosition;
-}
+
 // extracts a number from a L43 type string
 int extract_number(char str[])
 {
@@ -76,14 +62,17 @@ int main(void)
     }
     int num = extract_number(lineBuf[idx]);
     char direction = lineBuf[idx][0];
-    currentPosition = rotate(direction, currentPosition, num);
-    printf("original: %s, direction : %c num: %d\n", lineBuf[idx], direction, num);
-    if (currentPosition == 0)
-    {
-      numberOfZeros++;
-    }
-    int crossover = num / 100;
-    numberOfZeros += crossover;
+    int magnitude = num % 100;
+    printf("starting position: %d ", currentPosition);
+    int nextPosition = rotate(direction, currentPosition, magnitude);
+    printf("ending position: %d \n", nextPosition);
+    printf("movement: %c %d \n", direction, magnitude);
+    printf("number of zeroes before: %d\n", numberOfZeros);
+    printf("zeroes params: magnitufe %d\n", num);
+    int additionalZeroCount = get_zeroes_for_rotation(direction, currentPosition, num);
+    numberOfZeros += additionalZeroCount;
+    printf("number of zeroes after: %d\n\n", numberOfZeros);
+    currentPosition = nextPosition;
   }
   printf("Number of zeroes: %d\n", numberOfZeros);
 
