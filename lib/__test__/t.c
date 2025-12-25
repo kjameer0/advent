@@ -49,6 +49,11 @@ static void test_is_repeating_half(void **state)
   assert_int_equal(is_repeating_half(101), 0);
   assert_int_equal(is_repeating_half(1010), 1);
   assert_int_equal(is_repeating_half(2121212118), 0);
+  assert_int_equal(is_repeating_half(24), 0);
+  assert_int_equal(is_repeating_half(25), 0);
+  assert_int_equal(is_repeating_half(26), 0);
+  assert_int_equal(is_repeating_half(27), 0);
+  assert_int_equal(is_repeating_half(33), 1);
 }
 
 static void test_rotate(void **state)
@@ -58,6 +63,18 @@ static void test_rotate(void **state)
   assert_int_equal(rotate('R', 0, 1), 1);
   assert_int_equal(rotate('L', 0, 1), 99);
 }
+static void test_create_slice(void **state)
+{
+  (void)state;
+  char *output = malloc(50 * sizeof(char));
+  enum CreateSliceResult result = create_slice("hello", 1, 4, output);
+  assert_true(result == CREATE_SLICE_SUCCESS);
+  assert_string_equal(output, "ell");
+  char *output2 = malloc(50 * sizeof(char));
+  enum CreateSliceResult improperSlice = create_slice("hello", 0, 10, output);
+  assert_true(improperSlice == CREATE_SLICE_FAILURE);
+
+}
 
 int main(void)
 {
@@ -65,7 +82,8 @@ int main(void)
       cmocka_unit_test(test_get_zeroes_for_rotation),
       cmocka_unit_test(test_rotate),
       cmocka_unit_test(test_split_string),
-      cmocka_unit_test(test_is_repeating_half)};
+      cmocka_unit_test(test_is_repeating_half),
+      cmocka_unit_test(test_create_slice)};
 
   return cmocka_run_group_tests(tests, NULL, NULL);
 }

@@ -7,9 +7,19 @@
 
 #include <stdbool.h>
 
+enum CreateSliceResult {
+ CREATE_SLICE_SUCCESS,
+ CREATE_SLICE_FAILURE,
+ CREATE_SLICE_NOT_ENOUGH_BUFFER_SIZE,
+};
+
 int foo(int x); /* An example function declaration */
 
 void split_string(const char str[], char **buf, char separator, int buf_size);
 
-bool is_repeating_half(int num);
+bool is_repeating_half(long num);
+
+bool is_substring_repeating(const char *substring, const char *str);
+// end idx is inclusive startIdx = 0 and endIdx = 2 gets first three chars
+enum CreateSliceResult create_slice(const char *str, int startIdx, int endIdx, char slice[]);
 #endif
