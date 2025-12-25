@@ -46,8 +46,6 @@ int get_zeroes_for_rotation(char direction, int start, int magnitude)
   }
   else
   {
-    printf("params: char: %c start %d magnitude %d", direction, start, magnitude);
-    printf("initial subtraction%d", start-magnitude);
     if (start - magnitude <= 0)
     {
       numberOfZeros++;

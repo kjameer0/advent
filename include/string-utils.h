@@ -5,8 +5,11 @@
 #ifndef STRINGS_UTILS_H /* Include guard */
 #define STRINGS_UTILS_H
 
+#include <stdbool.h>
+
 int foo(int x); /* An example function declaration */
 
-void split_string(char str[], char *buf[], char separator, unsigned long buf_size);
+void split_string(const char str[], char **buf, char separator, int buf_size);
 
+bool is_repeating_half(int num);
 #endif
