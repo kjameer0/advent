@@ -122,6 +122,21 @@ static void test_is_repeating_continuous(void **state)
   assert_false(is_repeating_continuous("12", correctInput2));
 }
 
+static void test_index_of(void **state)
+{
+  (void)state;
+  int arr[] = {1, 6, 5};
+  assert_int_equal(index_of(arr, 6, 3), 1);
+  assert_int_equal(index_of(arr, 3, 3), -1);
+}
+static void test_unshift_array(void **state)
+{
+  (void)state;
+  int arr[] = {1, 6, 5};
+  assert_int_equal(unshift_array(arr, 5, 3), 0);
+  assert_int_equal(arr[0], 5);
+}
+
 int main(void)
 {
   const struct CMUnitTest tests[] = {
@@ -133,6 +148,8 @@ int main(void)
       cmocka_unit_test(test_is_valid_id),
       cmocka_unit_test(test_is_repeating_continuous),
       cmocka_unit_test(test_convert_digits_to_int_array),
+      cmocka_unit_test(test_index_of),
+      cmocka_unit_test(test_unshift_array),
 
   };
 

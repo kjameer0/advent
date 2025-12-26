@@ -141,7 +141,7 @@ enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int 
   return STRING_TO_INT_ARRAY_SUCCESS;
 }
 
-int index_of(int *arr, size_t len, int target)
+int index_of(int *arr, int target, size_t len)
 {
   for (size_t i = 0; i < len; i++)
   {
@@ -191,13 +191,14 @@ int unshift_array(int arr[], int value, size_t len)
   return 0;
 }
 
-int find_next_smaller_idx(int arr[], int value, size_t len) {
+int find_next_smaller_idx(int arr[], int value, size_t len)
+{
   for (size_t idx = 0; idx < len; idx++)
   {
-    if (arr[idx] < value) {
+    if (arr[idx] < value)
+    {
       return idx;
     }
   }
   return -1;
 }
-
