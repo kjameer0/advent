@@ -7,13 +7,22 @@
 
 #include <stdbool.h>
 
-enum CreateSliceResult {
- CREATE_SLICE_SUCCESS,
- CREATE_SLICE_FAILURE,
- CREATE_SLICE_NOT_ENOUGH_BUFFER_SIZE,
+enum StringToIntArrayResult
+{
+  STRING_TO_INT_ARRAY_SUCCESS,
+  STRING_TO_INT_ARRAY_FAILURE,
+  STRING_TO_INT_ARRAY_BUF_SIZE_TOO_SMALL
 };
+enum CreateSliceResult
+{
+  CREATE_SLICE_SUCCESS,
+  CREATE_SLICE_FAILURE,
+  CREATE_SLICE_NOT_ENOUGH_BUFFER_SIZE,
+};
+bool is_valid_id(long num);
 
-int foo(int x); /* An example function declaration */
+bool is_repeating_continuous(const char *substring, const char *str);
+int foo(int x);
 
 void split_string(const char str[], char **buf, char separator, int buf_size);
 
@@ -22,4 +31,6 @@ bool is_repeating_half(long num);
 bool is_substring_repeating(const char *substring, const char *str);
 // end idx is inclusive startIdx = 0 and endIdx = 2 gets first three chars
 enum CreateSliceResult create_slice(const char *str, int startIdx, int endIdx, char slice[]);
+
+enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int output_buf[], int buf_size);
 #endif

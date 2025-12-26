@@ -33,15 +33,16 @@ int main()
     long rangeEnd = strtol(bufSubstring[1], NULL, 10);
     for (long currentId = rangeStart; currentId <= rangeEnd; currentId++)
     {
-      printf("%ld\n", currentId);
-      if (is_repeating_half(currentId))
+      // printf("%ld\n", currentId);
+      if (is_valid_id(currentId))
       {
         invalidIdSums += (long)currentId;
       }
     }
+    free(bufSubstring[0]);
+    free(bufSubstring[1]);
     free(bufSubstring);
     free(rangeStr);
-    // break;
   }
   printf("Total = %ld\n", invalidIdSums);
   free(input_data);

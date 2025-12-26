@@ -70,10 +70,56 @@ static void test_create_slice(void **state)
   enum CreateSliceResult result = create_slice("hello", 1, 4, output);
   assert_true(result == CREATE_SLICE_SUCCESS);
   assert_string_equal(output, "ell");
+
   char *output2 = malloc(50 * sizeof(char));
-  enum CreateSliceResult improperSlice = create_slice("hello", 0, 10, output);
+  enum CreateSliceResult improperSlice = create_slice("hello", 0, 10, output2);
   assert_true(improperSlice == CREATE_SLICE_FAILURE);
 
+  char *output3 = malloc(50 * sizeof(char));
+  enum CreateSliceResult result3 = create_slice("hello", 0, 1, output3);
+  assert_true(result3 == CREATE_SLICE_SUCCESS);
+  assert_string_equal(output3, "h");
+}
+
+static void test_is_valid_id(void **state)
+{
+  (void)state;
+  long invalidNum1 = 2894097257;
+  assert_false(is_valid_id(invalidNum1));
+
+  long validNum1 = 2020;
+  assert_true(is_valid_id(validNum1));
+
+  long validNum2 = 20202020;
+  assert_true(is_valid_id(validNum2));
+
+  long invalidNum2 = 20202;
+  assert_false(is_valid_id(invalidNum2));
+
+  long validNum3 = 999;
+  assert_true(is_valid_id(validNum3));
+}
+
+static void test_convert_digits_to_int_array(void **state)
+{
+  (void)state;
+  int buf[12] = {0};
+  enum StringToIntArrayResult res = convert_digits_to_int_array("123456123456", buf, 12);
+  assert_true(res == STRING_TO_INT_ARRAY_SUCCESS);
+  assert_int_equal(buf[0], 1);
+  assert_int_equal(buf[11], 6);
+}
+
+static void test_is_repeating_continuous(void **state)
+{
+  (void)state;
+  const char *correctInput1 = "hehe";
+  assert_true(is_repeating_continuous("he", correctInput1));
+  assert_false(is_repeating_continuous("h", correctInput1));
+
+  const char *correctInput2 = "123123";
+  assert_true(is_repeating_continuous("123", correctInput2));
+  assert_false(is_repeating_continuous("12", correctInput2));
 }
 
 int main(void)
@@ -83,7 +129,12 @@ int main(void)
       cmocka_unit_test(test_rotate),
       cmocka_unit_test(test_split_string),
       cmocka_unit_test(test_is_repeating_half),
-      cmocka_unit_test(test_create_slice)};
+      cmocka_unit_test(test_create_slice),
+      cmocka_unit_test(test_is_valid_id),
+      cmocka_unit_test(test_is_repeating_continuous),
+      cmocka_unit_test(test_convert_digits_to_int_array),
+
+  };
 
   return cmocka_run_group_tests(tests, NULL, NULL);
 }

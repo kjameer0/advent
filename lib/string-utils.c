@@ -68,7 +68,7 @@ bool is_repeating_half(long num)
 
 enum CreateSliceResult create_slice(const char *str, int startIdx, int endIdx, char slice[])
 {
-  if (startIdx >= endIdx || startIdx < 0 || endIdx > strlen(str))
+  if (startIdx > endIdx || startIdx < 0 || endIdx > strlen(str))
   {
     return CREATE_SLICE_FAILURE;
   }
@@ -77,7 +77,7 @@ enum CreateSliceResult create_slice(const char *str, int startIdx, int endIdx, c
   return CREATE_SLICE_SUCCESS;
 }
 
-bool is_valid(long num)
+bool is_valid_id(long num)
 {
   char stringified_number[80];
   sprintf(stringified_number, "%ld", num);
@@ -88,4 +88,116 @@ bool is_valid(long num)
     exit(1);
   }
   int len = (int)size;
+  // create larger and larger slices
+  int sliceSize = 1;
+  // iterate from 0 to half size of stringed number
+  // make a string of slice size
+  // check if that string is repeating
+  for (int idx = 0; idx < len / 2; idx++)
+  {
+    char *slice = malloc(sliceSize + 1);
+    enum CreateSliceResult result = create_slice(stringified_number, 0, sliceSize, slice);
+    if (is_repeating_continuous(slice, stringified_number))
+    {
+      return true;
+    }
+    free(slice);
+    sliceSize++;
+  }
+  return false;
 }
+
+// checks if a small string is repeating for the entirety of another string
+bool is_repeating_continuous(const char *substring, const char *str)
+{
+  int len = (int)strlen(str);
+  int mod = (int)strlen(substring);
+  if (len % mod != 0)
+  {
+    return false;
+  }
+  for (int idx = 0; idx < len; idx++)
+  {
+    if (substring[idx % mod] != str[idx])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int output_buf[], int buf_size)
+{
+  int digit_len = strlen(digits);
+  if (buf_size < digit_len)
+  {
+    return STRING_TO_INT_ARRAY_BUF_SIZE_TOO_SMALL;
+  }
+  for (int idx = 0; idx < digit_len; idx++)
+  {
+    int converted_digit = digits[idx] - '0';
+    output_buf[idx] = converted_digit;
+  }
+  return STRING_TO_INT_ARRAY_SUCCESS;
+}
+
+int index_of(int *arr, size_t len, int target)
+{
+  for (size_t i = 0; i < len; i++)
+  {
+    if (arr[i] == target)
+    {
+      return (int)i;
+    }
+  }
+  return -1;
+}
+
+int find_smallest(int *arr, size_t len)
+{
+  int cur_max = arr[0];
+  for (size_t i = 0; i < len; i++)
+  {
+    if (arr[i] < cur_max)
+    {
+      cur_max = arr[i];
+    }
+  }
+  return cur_max;
+}
+
+int splice_arr(int arr[], int target, size_t len)
+{
+  int target_idx = index_of(arr, len, target);
+  if (target_idx == -1)
+  {
+    return -1;
+  }
+  for (size_t idx = target_idx; idx < len - 1; idx++)
+  {
+    arr[idx] = arr[idx + 1];
+  }
+  return 0;
+}
+
+// insert value at an index and move all subsequent values to the right
+int unshift_array(int arr[], int value, size_t len)
+{
+  for (size_t idx = 1; idx < len; idx++)
+  {
+    arr[idx] = arr[idx - 1];
+  }
+  arr[0] = value;
+  return 0;
+}
+
+int find_next_smaller_idx(int arr[], int value, size_t len) {
+  for (size_t idx = 0; idx < len; idx++)
+  {
+    if (arr[idx] < value) {
+      return idx;
+    }
+  }
+  return -1;
+}
+
