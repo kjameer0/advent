@@ -166,13 +166,8 @@ int find_smallest(int *arr, size_t len)
   return cur_max;
 }
 
-int splice_arr(int arr[], int target, size_t len)
+int splice_arr(int arr[], int target_idx, size_t len)
 {
-  int target_idx = index_of(arr, len, target);
-  if (target_idx == -1)
-  {
-    return -1;
-  }
   for (size_t idx = target_idx; idx < len - 1; idx++)
   {
     arr[idx] = arr[idx + 1];
@@ -181,11 +176,17 @@ int splice_arr(int arr[], int target, size_t len)
 }
 
 // insert value at an index and move all subsequent values to the right
+// 1,2,3   4
+// 4 1 2
 int unshift_array(int arr[], int value, size_t len)
 {
+  int temp = arr[0];
+  int temp2 = arr[0];
   for (size_t idx = 1; idx < len; idx++)
   {
-    arr[idx] = arr[idx - 1];
+    temp2 = arr[idx];
+    arr[idx] = temp;
+    temp = temp2;
   }
   arr[0] = value;
   return 0;
@@ -201,4 +202,47 @@ int find_next_smaller_idx(int arr[], int value, size_t len)
     }
   }
   return -1;
+}
+
+long convert_digit_arr_to_long(int *digits, size_t len)
+{
+  long total = 0;
+  for (size_t idx = 0; idx < len; idx++)
+  {
+    long cur = (long)digits[idx];
+    total += cur;
+    if (idx < len - 1)
+    {
+      total *= 10;
+    }
+  }
+  return total;
+}
+
+int elevate_arr(int arr[], int new_num, size_t arr_size)
+{
+  // find idx to remove
+  if (new_num == 1 || new_num < arr[0])
+  {
+    return 0;
+  }
+  size_t idx_to_remove = 0;
+  for (size_t idx = 0; idx < arr_size - 1; idx++)
+  {
+    int cur = arr[idx];
+    int next = arr[idx + 1];
+    if (cur < next || cur == 1)
+    {
+      idx_to_remove = idx;
+      int res = splice_arr(arr, (int)idx_to_remove, arr_size);
+      if (res == -1)
+      {
+        perror("Failed to splice digits");
+        return -1;
+      }
+      int unshift_result = unshift_array(arr, new_num, arr_size);
+      return 0;
+    }
+  }
+  int unshift_result = unshift_array(arr, new_num, arr_size);
 }

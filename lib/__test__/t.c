@@ -137,6 +137,62 @@ static void test_unshift_array(void **state)
   assert_int_equal(arr[0], 5);
 }
 
+static void test_convert_digit_arr_to_long(void **state)
+{
+  (void)state;
+  int arr[] = {1, 6, 5};
+  assert_true(convert_digit_arr_to_long(arr, 3) == 165);
+  int arr2[] = {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9};
+  assert_true(convert_digit_arr_to_long(arr2, 12) == 999999999999);
+}
+static void test_splice_arr(void **state)
+{
+  (void)state;
+  int arr[] = {1, 6, 5};
+  splice_arr(arr, 1, 3);
+  assert_int_equal(arr[1], 5);
+  int arr2[] = {444, 3};
+  splice_arr(arr2, 0, 2);
+  assert_int_equal(arr2[0], 3);
+}
+static void test_elevate_arr(void **state)
+{
+  (void)state;
+  int arr[] = {1, 6, 5};
+  elevate_arr(arr, 5, 3);
+  int arr_val = (int)convert_digit_arr_to_long(arr, 3);
+  assert_int_equal(arr_val, 565);
+
+  int arr2[] = {5, 4, 4, 2, 3, 4, 7, 9, 8, 4, 4, 7};
+  elevate_arr(arr2, 5, 12);
+  long arr_val2 = convert_digit_arr_to_long(arr2, 12);
+  assert_int_equal(arr_val2, 554434798447);
+
+  int arr3[] = {5, 4, 4, 2, 3, 4, 7, 9, 8, 4, 4, 7};
+  elevate_arr(arr3, 1, 12);
+  long arr_val3 = convert_digit_arr_to_long(arr3, 12);
+  assert_int_equal(arr_val3, 544234798447);
+
+  int arr4[] = {9,9,9,9,9,9,9,9,9,9,9,9};
+  elevate_arr(arr4, 1, 12);
+  long arr_val4 = convert_digit_arr_to_long(arr4, 12);
+  assert_int_equal(arr_val4, 999999999999);
+
+  int arr5[] = {1,1,1,1,1,1,1,1,1,1,1,1};
+  elevate_arr(arr5, 2, 12);
+  long arr_val5 = convert_digit_arr_to_long(arr5, 12);
+  assert_int_equal(arr_val5, 211111111111);
+
+  int arr6[] = {1,1,1,1,1,6,1,1,1,1,1,1};
+  elevate_arr(arr6, 2, 12);
+  long arr_val6 = convert_digit_arr_to_long(arr6, 12);
+  assert_int_equal(arr_val6, 211116111111);
+
+  int arr7[] = {9,9,9,9,9,9,9,9,9,9,9,8};
+  elevate_arr(arr7, 9, 12);
+  long arr_val7 = convert_digit_arr_to_long(arr7, 12);
+  assert_int_equal(arr_val7, 999999999999);
+}
 int main(void)
 {
   const struct CMUnitTest tests[] = {
@@ -150,7 +206,9 @@ int main(void)
       cmocka_unit_test(test_convert_digits_to_int_array),
       cmocka_unit_test(test_index_of),
       cmocka_unit_test(test_unshift_array),
-
+      cmocka_unit_test(test_convert_digit_arr_to_long),
+      cmocka_unit_test(test_splice_arr),
+      cmocka_unit_test(test_elevate_arr),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);

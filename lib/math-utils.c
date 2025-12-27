@@ -62,3 +62,11 @@ int max(int num1, int num2)
   return num2;
 }
 
+int max_long(long num1, long num2)
+{
+  if (num1 >= num2)
+  {
+    return num1;
+  }
+  return num2;
+}

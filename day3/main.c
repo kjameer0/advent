@@ -7,49 +7,45 @@
 
 int main(void)
 {
-  FILE *fptr = fopen("./day3/data.txt", "r");
+  FILE *fptr = fopen("./day3/sample-data.txt", "r");
+  long total = 0;
+  size_t battery_size = 12;
   char line[500] = {0};
-  int total = 0;
   while (fgets(line, 500, fptr))
   {
     line[strcspn(line, "\n")] = '\0';
-    int lineLength = (int)strlen(line);
-    int right = lineLength - 2;
-    // highest num we have seen thus far
-    char curBatteryMaxRaw[2];
-    create_slice(line, right + 1, right + 2, curBatteryMaxRaw);
-    int curMaxBattery = 0;
-    // pack raw string into int
-    sscanf(curBatteryMaxRaw, "%d", &curMaxBattery);
-    printf("Starting max: %d\n", curMaxBattery);
-    int maxValue = 0;
-    printf("line %s\n", line);
-    while (right >= 0)
+    size_t lineLength = strlen(line);
+    printf("%s\n", line);
+    // array storing twelve chars to compare
+    // get last twelve digits into separate string
+    char slice[battery_size];
+    create_slice(line, (int)lineLength - (int)battery_size, (int)lineLength, slice);
+    printf("slice: %s\n", slice);
+    // create digit arr and running max for battery value
+    int digits[battery_size];
+    convert_digits_to_int_array(slice, digits, battery_size);
+
+    long max_battery = 0;
+    long cur_battery = convert_digit_arr_to_long(digits, battery_size);
+    printf("long: %ld\n", cur_battery);
+    // i have two representations of the data, the long and the digits
+    // i have to iterate backwards from the first index i havent seen yet
+    size_t right = lineLength - battery_size - 1;
+    printf("line length: %d\n", (int)lineLength);
+    printf("beginning right should be 7: %c\n", line[right]);
+    max_battery = cur_battery;
+    printf("Right: %ld\n", right);
+    size_t start = 0;
+    while (right >= start && right < lineLength)
     {
-      // extract part of string we need: a single digit
-      char curBatteryRaw[2];
-      create_slice(line, right, right + 1, curBatteryRaw);
-
-      // place raw digit string currBatteryRaw into an int
-      int curBatteryNum = 0;
-      // pack raw string into int
-      sscanf(curBatteryRaw, "%d", &curBatteryNum);
-      // printf("Current battery Digit: %d\n", curBatteryNum);
-
-      // make possible num out of current num and max and compart it to maxval
-
-      int potentialMax = curBatteryNum * 10 + curMaxBattery;
-      maxValue = max(potentialMax, maxValue);
-      printf("Maximum result: %d\n Current: %d MaxOnright: %d", maxValue, curBatteryNum, curMaxBattery);
-      if (curBatteryNum >= curMaxBattery)
-      {
-        curMaxBattery = curBatteryNum;
-      }
+      int new_num = line[right];
+      // use digits 
       right--;
     }
-    total += maxValue;
-    printf("Max for line: %d\n", maxValue);
+    // max_battery = max_long(max_battery, cur_battery); break;
+    total += max_battery;
+    break;
   }
-  printf("Total: %d\n", total);
+  // printf("Total: %d\n", total);
   fclose(fptr);
 }

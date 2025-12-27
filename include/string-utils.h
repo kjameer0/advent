@@ -37,7 +37,16 @@ enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int 
 
 int index_of(int *arr, int target, size_t len);
 int find_smallest(int *arr, size_t len);
-int splice_arr(int arr[], int target, size_t len);
+int splice_arr(int arr[], int target_idx, size_t len);
 int unshift_array(int arr[], int value, size_t len);
 int find_next_smaller_idx(int arr[], int value, size_t len);
+
+long convert_digit_arr_to_long(int *digits, size_t len);
+
+// try to insert a new value into an array
+// if that value is new greatest or the same as the greatest
+// add to front and remove the first number
+// before an increasing number
+int elevate_arr(int arr[], int new_num, size_t arr_size);
+
 #endif
