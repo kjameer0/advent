@@ -204,12 +204,12 @@ int find_next_smaller_idx(int arr[], int value, size_t len)
   return -1;
 }
 
-long convert_digit_arr_to_long(int *digits, size_t len)
+unsigned long convert_digit_arr_to_long(int *digits, size_t len)
 {
-  long total = 0;
+  unsigned long total = 0;
   for (size_t idx = 0; idx < len; idx++)
   {
-    long cur = (long)digits[idx];
+    unsigned long cur = (unsigned long)digits[idx];
     total += cur;
     if (idx < len - 1)
     {
@@ -245,4 +245,5 @@ int elevate_arr(int arr[], int new_num, size_t arr_size)
     }
   }
   int unshift_result = unshift_array(arr, new_num, arr_size);
+  return 0;
 }

@@ -41,7 +41,7 @@ int splice_arr(int arr[], int target_idx, size_t len);
 int unshift_array(int arr[], int value, size_t len);
 int find_next_smaller_idx(int arr[], int value, size_t len);
 
-long convert_digit_arr_to_long(int *digits, size_t len);
+unsigned long convert_digit_arr_to_long(int *digits, size_t len);
 
 // try to insert a new value into an array
 // if that value is new greatest or the same as the greatest

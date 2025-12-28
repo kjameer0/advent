@@ -7,45 +7,53 @@
 
 int main(void)
 {
-  FILE *fptr = fopen("./day3/sample-data.txt", "r");
-  long total = 0;
+  FILE *fptr = fopen("./day3/data.txt", "r");
+  unsigned long total = 0;
   size_t battery_size = 12;
   char line[500] = {0};
   while (fgets(line, 500, fptr))
   {
     line[strcspn(line, "\n")] = '\0';
     size_t lineLength = strlen(line);
-    printf("%s\n", line);
     // array storing twelve chars to compare
     // get last twelve digits into separate string
     char slice[battery_size];
     create_slice(line, (int)lineLength - (int)battery_size, (int)lineLength, slice);
-    printf("slice: %s\n", slice);
+    // printf("slice: %s\n", slice);
     // create digit arr and running max for battery value
     int digits[battery_size];
     convert_digits_to_int_array(slice, digits, battery_size);
 
-    long max_battery = 0;
-    long cur_battery = convert_digit_arr_to_long(digits, battery_size);
-    printf("long: %ld\n", cur_battery);
+    unsigned long max_battery = 0;
+    unsigned long cur_battery = convert_digit_arr_to_long(digits, battery_size);
+    printf("long: %lu\n", cur_battery);
     // i have two representations of the data, the long and the digits
     // i have to iterate backwards from the first index i havent seen yet
     size_t right = lineLength - battery_size - 1;
-    printf("line length: %d\n", (int)lineLength);
-    printf("beginning right should be 7: %c\n", line[right]);
     max_battery = cur_battery;
-    printf("Right: %ld\n", right);
     size_t start = 0;
     while (right >= start && right < lineLength)
     {
-      int new_num = line[right];
-      // use digits 
+      int new_num = line[right] - '0';
+      // use digits
+      // printf("new num: %d\n", new_num);
+      int res = elevate_arr(digits, new_num, battery_size);
+      if (res == -1)
+      {
+        exit(1);
+      }
+      // printf("old battery value: %ld\n", cur_battery);
+      unsigned long new_battery = convert_digit_arr_to_long(digits, battery_size);
+      if (new_battery > max_battery)
+      {
+        max_battery = new_battery;
+      }
+      // printf("New battery value: %ld\n", new_battery);
       right--;
     }
-    // max_battery = max_long(max_battery, cur_battery); break;
+    printf("Max battery for line %s: %lu\n", line, max_battery);
     total += max_battery;
-    break;
   }
-  // printf("Total: %d\n", total);
+  printf("Total: %lu\n", total);
   fclose(fptr);
 }
