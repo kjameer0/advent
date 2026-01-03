@@ -4,6 +4,8 @@
 #include <cmocka.h>
 #include "../../include/math-utils.h"
 #include "../../include/string-utils.h"
+#include "../../include/matrix-utils.h"
+#include "../../include/sorting.h"
 #include <stdlib.h>
 #include <stdbool.h>
 // #include "math_utils.h"
@@ -11,6 +13,7 @@ int add(int x, int y)
 {
   return x + y;
 }
+
 
 static void test_get_zeroes_for_rotation(void **state)
 {
@@ -173,25 +176,92 @@ static void test_elevate_arr(void **state)
   long arr_val3 = convert_digit_arr_to_long(arr3, 12);
   assert_int_equal(arr_val3, 544234798447);
 
-  int arr4[] = {9,9,9,9,9,9,9,9,9,9,9,9};
+  int arr4[] = {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9};
   elevate_arr(arr4, 1, 12);
   long arr_val4 = convert_digit_arr_to_long(arr4, 12);
   assert_int_equal(arr_val4, 999999999999);
 
-  int arr5[] = {1,1,1,1,1,1,1,1,1,1,1,1};
+  int arr5[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
   elevate_arr(arr5, 2, 12);
   long arr_val5 = convert_digit_arr_to_long(arr5, 12);
   assert_int_equal(arr_val5, 211111111111);
 
-  int arr6[] = {1,1,1,1,1,6,1,1,1,1,1,1};
+  int arr6[] = {1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1};
   elevate_arr(arr6, 2, 12);
   long arr_val6 = convert_digit_arr_to_long(arr6, 12);
   assert_int_equal(arr_val6, 211116111111);
 
-  int arr7[] = {9,9,9,9,9,9,9,9,9,9,9,8};
+  int arr7[] = {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8};
   elevate_arr(arr7, 9, 12);
   long arr_val7 = convert_digit_arr_to_long(arr7, 12);
   assert_int_equal(arr_val7, 999999999999);
+}
+static void test_get_start_row(void **state)
+{
+  (void)state;
+  int box_size = 3;
+  int row = 0;
+  assert_int_equal(-1, get_start_row(row, box_size));
+  row = 1;
+  assert_int_equal(0, get_start_row(row, box_size));
+}
+static void test_get_start_col(void **state)
+{
+  (void)state;
+  int box_size = 3;
+  int col = 0;
+  assert_int_equal(-1, get_start_col(col, box_size));
+  col = 8;
+  assert_int_equal(7, get_start_col(col, box_size));
+}
+static void test_sorting(void **state)
+{
+  (void)state;
+  int arr[] = {1, 3, 2};
+  sort(arr, 3);
+  assert_int_equal(arr[1], 2);
+  int arr2[] = {1, 3, 2, 10, 4, 7, 0, 6, 11};
+  sort(arr2, 9);
+  for (int i = 0; i < 8; i++)
+  {
+    int cur = arr2[i];
+    int next = arr2[i + 1];
+    assert_true(cur <= next);
+  }
+}
+
+static void test_sort_2d(void **state)
+{
+  (void)state;
+  unsigned long arr[][2] = {{4, 6}, {1, 3}};
+  sort_2d(arr, 2);
+  for (int i = 0; i < 1; i++)
+  {
+    unsigned long cur = arr[i][0];
+    unsigned long next = arr[i + 1][0];
+    assert_true(cur <= next);
+  }
+  unsigned long arr2[][2] = {{4, 6}, {1, 3}, {5, 6}, {16, 21}, {4, 8}, {10, 15}};
+  sort_2d(arr2, 6);
+  for (int i = 0; i < 5; i++)
+  {
+    unsigned long cur = arr2[i][0];
+    unsigned long next = arr2[i + 1][0];
+    assert_true(cur <= next);
+  }
+}
+
+static void test_merge_intervals(void **state)
+{
+  (void)state;
+  unsigned long arr[][2] = {{4, 8}, {1, 3}, {5, 6}, {16, 21}, {4, 6}, {10, 15}};
+  size_t row_count = merge_intervals(arr, 6);
+  print_2d(arr, row_count);
+  assert_int_equal((int)row_count, 4);
+  unsigned long arr2[][2] = {{1, 5}, {2, 6}, {3, 7}, {4, 8}, {5, 9}, {6, 10}, {7, 11}, {8, 12}, {9, 13}, {10, 14}};
+  size_t row_count2 = merge_intervals(arr2, 10);
+
+  assert_int_equal((int)row_count2, 1);
 }
 int main(void)
 {
@@ -209,6 +279,11 @@ int main(void)
       cmocka_unit_test(test_convert_digit_arr_to_long),
       cmocka_unit_test(test_splice_arr),
       cmocka_unit_test(test_elevate_arr),
+      cmocka_unit_test(test_get_start_row),
+      cmocka_unit_test(test_get_start_col),
+      cmocka_unit_test(test_sorting),
+      cmocka_unit_test(test_sort_2d),
+      cmocka_unit_test(test_merge_intervals),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);

@@ -70,3 +70,11 @@ int max_long(long num1, long num2)
   }
   return num2;
 }
+unsigned long max_unsigned_long(unsigned long num1, unsigned long num2)
+{
+  if (num1 >= num2)
+  {
+    return num1;
+  }
+  return num2;
+}

@@ -7,5 +7,5 @@ int rotate(char direction, int start, int magnitude);
 
 int max(int num1, int num2);
 int max_long(long num1, long num2);
-
+unsigned long max_unsigned_long(unsigned long num1, unsigned long num2);
 #endif

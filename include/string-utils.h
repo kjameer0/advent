@@ -36,6 +36,7 @@ enum CreateSliceResult create_slice(const char *str, int startIdx, int endIdx, c
 enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int output_buf[], int buf_size);
 
 int index_of(int *arr, int target, size_t len);
+int index_of_lu(unsigned long *arr, unsigned long target, size_t len);
 int find_smallest(int *arr, size_t len);
 int splice_arr(int arr[], int target_idx, size_t len);
 int unshift_array(int arr[], int value, size_t len);

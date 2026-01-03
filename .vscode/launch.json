@@ -6,10 +6,10 @@
       "type": "lldb",
       "request": "launch",
       // "preLaunchTask": "build C program",
-      "program": "${workspaceFolder}/day2/main",
+      "program": "${workspaceFolder}/day5/main",
       "args": [],
       "cwd": "${workspaceFolder}",
-      "stopOnEntry": false,
+      "stopOnEntry": true,
       "console": "integratedTerminal"
     }
   ]

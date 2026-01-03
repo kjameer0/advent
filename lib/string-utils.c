@@ -32,7 +32,7 @@ void split_string(const char str[], char **buf, char separator, int buf_size)
     memcpy(substring, str + left, right - left);
     substring[right - left] = '\0';
     buf[bufIdx] = substring;
-    buf[bufIdx + 1] = NULL;
+    // buf[bufIdx + 1] = NULL;
     left = right + 1;
     bufIdx++;
   }
@@ -142,6 +142,17 @@ enum StringToIntArrayResult convert_digits_to_int_array(const char *digits, int 
 }
 
 int index_of(int *arr, int target, size_t len)
+{
+  for (size_t i = 0; i < len; i++)
+  {
+    if (arr[i] == target)
+    {
+      return (int)i;
+    }
+  }
+  return -1;
+}
+int index_of_lu(unsigned long *arr, unsigned long target, size_t len)
 {
   for (size_t i = 0; i < len; i++)
   {
