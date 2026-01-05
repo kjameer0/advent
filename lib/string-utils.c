@@ -258,3 +258,30 @@ int elevate_arr(int arr[], int new_num, size_t arr_size)
   int unshift_result = unshift_array(arr, new_num, arr_size);
   return 0;
 }
+
+void split_string_no_allocation(const char *str[], char **buf, char separator, size_t buf_size)
+{
+  int left = 0;
+  int bufIdx = 0;
+  size_t len = strlen(str);
+  if (strlen(str) > buf_size)
+  {
+    perror("Buffer too large");
+    exit(1);
+  }
+  for (int right = 0; right <= len; right++)
+  {
+    char currentChar = str[right];
+    if (currentChar != separator && right != strlen(str))
+    {
+      continue;
+    }
+    char *substring = malloc(right - left + 1);
+    memcpy(substring, str + left, right - left);
+    substring[right - left] = '\0';
+    buf[bufIdx] = substring;
+    // buf[bufIdx + 1] = NULL;
+    left = right + 1;
+    bufIdx++;
+  }
+}
