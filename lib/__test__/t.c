@@ -14,7 +14,6 @@ int add(int x, int y)
   return x + y;
 }
 
-
 static void test_get_zeroes_for_rotation(void **state)
 {
   (void)state;
@@ -263,6 +262,16 @@ static void test_merge_intervals(void **state)
 
   assert_int_equal((int)row_count2, 1);
 }
+static void test_split_string2(void **state)
+{
+  (void)state;
+  char buf[100][100] = {0};
+  char str1[] = "101 4  452";
+  split_string2(str1, ' ', 100, 100, buf);
+  assert_string_equal(buf[0], "101");
+  assert_string_equal(buf[1], "4");
+  assert_string_equal(buf[2], "452");
+}
 int main(void)
 {
   const struct CMUnitTest tests[] = {
@@ -284,6 +293,7 @@ int main(void)
       cmocka_unit_test(test_sorting),
       cmocka_unit_test(test_sort_2d),
       cmocka_unit_test(test_merge_intervals),
+      cmocka_unit_test(test_split_string2),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);

@@ -26,6 +26,7 @@ bool is_repeating_continuous(const char *substring, const char *str);
 int foo(int x);
 
 void split_string(const char str[], char **buf, char separator, int buf_size);
+void split_string2(const char *str, char separator, size_t number_of_strings, size_t string_length, char buf[number_of_strings][string_length]);
 
 bool is_repeating_half(long num);
 

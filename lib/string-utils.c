@@ -285,3 +285,44 @@ void split_string_no_allocation(const char *str[], char **buf, char separator, s
     bufIdx++;
   }
 }
+
+void split_string2(const char *str, char separator, size_t number_of_strings, size_t string_length, char buf[number_of_strings][string_length])
+{
+  size_t len = strlen(str);
+  char cur_segment[string_length];
+  // // current idx of first empty string in output buffer
+  size_t buf_position = 0;
+  size_t cur_segment_idx = 0;
+  memset(cur_segment, 0, string_length);
+  for (size_t i = 0; i < len; i++)
+  {
+    char cur = str[i];
+    if (cur == separator)
+    {
+      if (strlen(cur_segment) > 0)
+      {
+        strcpy(buf[buf_position], cur_segment);
+        memset(cur_segment, 0, string_length);
+        buf_position++;
+        cur_segment_idx = 0;
+      }
+    }
+    else
+    {
+      if (strlen(cur_segment) == string_length - 1)
+      {
+        perror(sprintf("Insufficient string size allocated to split string %s", str));
+        exit(1);
+      }
+      cur_segment[cur_segment_idx] = cur;
+      cur_segment_idx++;
+    }
+  }
+  if (strlen(cur_segment) > 0)
+  {
+    strcpy(buf[buf_position], cur_segment);
+    memset(cur_segment, 0, string_length);
+    buf_position++;
+    cur_segment_idx = 0;
+  }
+}
