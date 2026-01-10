@@ -5,6 +5,30 @@ int foo2(int x) /* Function definition */
   return x + 5;
 }
 
+long perform_multiple_operations(long *nums, size_t number_count, char operation)
+{
+  if (number_count == 0)
+  {
+    return 0;
+  }
+  int total = nums[0];
+  for (size_t idx = 1; idx < number_count; idx++)
+  {
+    switch (operation)
+    {
+    case '*':
+      /* code */
+      total *= nums[idx];
+      break;
+    case '+':
+      total += nums[idx];
+    default:
+      break;
+    }
+  }
+  return total;
+}
+
 int rotate(char direction, int start, int magnitude)
 {
 

@@ -8,11 +8,6 @@
 #include "../../include/sorting.h"
 #include <stdlib.h>
 #include <stdbool.h>
-// #include "math_utils.h"
-int add(int x, int y)
-{
-  return x + y;
-}
 
 static void test_get_zeroes_for_rotation(void **state)
 {
@@ -271,6 +266,21 @@ static void test_split_string2(void **state)
   assert_string_equal(buf[0], "101");
   assert_string_equal(buf[1], "4");
   assert_string_equal(buf[2], "452");
+  char str2[] = "2477 92 399 956  8 44 3   989 459 11  858 93  6   832 9  92 69 53 44  43 3   75  2  2 88   6 988 7   8  8171 71 1      6 2986 41 137 84 158  62 676 584 9765 49 723 33 1  38 65 96 53  181 541 29 781 5843 3636 278 57 719 619   9 79  82 227  3 68 3  43 76 3594 42  88 29  4 46  75 77 36 55 43  763 2588 775 86 949 48 5   59  2237 94     9 953  924 6     6 753 4    4 96 691  8   1   51 5174 6  196  1 744 52 35 45 84   2 45 515 325 3   2 31 859 17";
+  char buf2[120][10] = {0};
+  int buf_size = split_string2(str2, ' ', 120, 10, buf2);
+  assert_int_equal(buf_size, -1);
+}
+
+static void test_perform_multiple_operations(void **state)
+{
+  (void)state;
+  const char add_symbol = '+';
+  const char multiply_symbol = '*';
+
+  long nums1[] = {1, 2, 3, 4};
+  assert_int_equal((int)perform_multiple_operations(nums1, 4, add_symbol), 10);
+  assert_int_equal((int)perform_multiple_operations(nums1, 4, multiply_symbol), 24);
 }
 int main(void)
 {
@@ -294,6 +304,7 @@ int main(void)
       cmocka_unit_test(test_sort_2d),
       cmocka_unit_test(test_merge_intervals),
       cmocka_unit_test(test_split_string2),
+      cmocka_unit_test(test_perform_multiple_operations),
   };
 
   return cmocka_run_group_tests(tests, NULL, NULL);
